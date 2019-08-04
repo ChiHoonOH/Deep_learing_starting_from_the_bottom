@@ -108,8 +108,41 @@ def most_similarity(standard_word, word_to_id, id_to_word, word_matrix, top=5):
             return
 
 def ppmi(C, verbose=False, eps=1e-8):
+    # 동시 발생 갯수 * N / x 발생갯수 , y 발생 갯수
+    # 각각 단어당 pmi 값을 구한다.
+    # N 총 발생 횟수 
+    N = np.sum(C)
+    # x 발생횟수, y 발생횟수
+    M = np.sum(C, axis=0) # (vocab_size,1)
+    total = C.shape[0] * C.shape[1]
+    
+    # plate = np.zeros(C.shape[0],C.shape[1])
+    ppmi_plate = np.zeros_like(C, dtype=np.float32) # C 와 같은 크기를 가지는 plate생성
+    '''
+    # i = 0; i<C.shape[0]; i++ 
+    # j = 0; j<C.shape[0]; j++ 
+    i의 빈도 M[i]
+    j의 빈도 M[j]
+    동시 발생 빈도 C[i,j]
+    '''
+    cnt = 0 
+    for i in range(C.shape[0]):
+        for j in range(C.shape[1]):            
+            # pmi = np.log2(C[i,j] * N/((M[i]+eps)*(M[j]+eps)))
+            '''
+            한 번도 출연하지 않았던 단어가 동시 발생 행렬에 포함 될리가 없기 때문에, 분모가 0이 되는 경우의 수는 없다.
+            하지만 분자가 0이 되는 경우의 수는 존재 하고, 이것이 log가 씌워지면 -inf  값을 출력하기 때문에 eps를 더해주는 것이다.
+            0이 되면 안되는 경우의 수가 있는지 없는지를 먼저 체크하고 eps를 더해준다. 막연하게 더해줘버리면 이런 오류가 발생한다.
+            '''
+            pmi = np.log2(C[i,j] * N/(M[i]*M[j])+eps)
+            ppmi_plate[i,j] = max(0,pmi)
+            if verbose:
+                cnt +=1
+                if cnt % (total//100) == 0: # 요 if 문의 의미가 이해가 가진 않는다. 
+                    print('%.1f%% 완료' % (100*cnt/total))
 
-    pass
+    return ppmi_plate
+    
         
         
         
