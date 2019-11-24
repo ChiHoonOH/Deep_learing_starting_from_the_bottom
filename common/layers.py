@@ -13,5 +13,6 @@ class MatMul:
         W, = self.params
         dx = np.matmul(dout, W.T)
         dW = np.matmul(self.x.T,dout)
+        # a[...] = b 의 경우 a의 주소는 그대로고 b의 값이 복사 된다.
         self.grads[0][...] = dW
         return dx

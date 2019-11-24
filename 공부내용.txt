@@ -1,0 +1,13 @@
+20191124 
+
+1장 
+
+
+affine 은 아핀이다. 완전연결계층을 뜻한다(xW)
+
+forward_net.py 에서 TwoLayerNet의 predict 과정을 모르겠다.
+
+역전파 -> matmul node에서 일어나는 과정은 모르겠다. 
+
+F1 score가 조화평균을 사용 하는 이유?  - 리서치가 좀 더 필요함. 
+F1 score는 2/((1/recall)+(1/precision))
