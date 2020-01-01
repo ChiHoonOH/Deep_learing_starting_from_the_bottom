@@ -11,3 +11,6 @@ forward_net.py 에서 TwoLayerNet의 predict 과정을 모르겠다.
 
 F1 score가 조화평균을 사용 하는 이유?  - 리서치가 좀 더 필요함. 
 F1 score는 2/((1/recall)+(1/precision))
+
+20191127
+
