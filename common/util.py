@@ -142,7 +142,29 @@ def ppmi(C, verbose=False, eps=1e-8):
                     print('%.1f%% 완료' % (100*cnt/total))
 
     return ppmi_plate
+
+
+    '''
+        -index에 익숙하지 않아서 햇갈려함
+    '''
+    def create_contexts_target(corpus, window_size=1):
+        target = corpus[window_size:-window_size]
+        contexts = []
+
+        for idx in range(window_size, len(corpus)-window_size):
+            cs = []
+            for t in range(-window_size, window_size+1):#idx 주변 window 사이즈 내에 있는 모든 원소들
+                if t == 0: # target을 제외한다고 보면 되겠다. 
+                    continue
+                cs.append(corpus[idx+t])
+
+        return np.array(context), np.array(target)
     
-        
+
+k = [0,1,2,3,4,1,5,6]    
+print(k[1:-1])
+
+
+    
         
         
