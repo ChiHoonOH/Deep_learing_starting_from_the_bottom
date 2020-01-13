@@ -147,22 +147,45 @@ def ppmi(C, verbose=False, eps=1e-8):
     '''
         -index에 익숙하지 않아서 햇갈려함
     '''
-    def create_contexts_target(corpus, window_size=1):
-        target = corpus[window_size:-window_size]
-        contexts = []
+def create_contexts_target(corpus, window_size=1):
+    target = corpus[window_size:-window_size]
+    contexts = []
 
-        for idx in range(window_size, len(corpus)-window_size):
-            cs = []
-            for t in range(-window_size, window_size+1):#idx 주변 window 사이즈 내에 있는 모든 원소들
-                if t == 0: # target을 제외한다고 보면 되겠다. 
-                    continue
-                cs.append(corpus[idx+t])
+    for idx in range(window_size, len(corpus)-window_size):
+        cs = []
+        for t in range(-window_size, window_size+1):#idx 주변 window 사이즈 내에 있는 모든 원소들
+            if t == 0: # target을 제외한다고 보면 되겠다. 
+                continue
+            cs.append(corpus[idx+t])
 
-        return np.array(context), np.array(target)
+    return np.array(context), np.array(target)
     
 
 k = [0,1,2,3,4,1,5,6]    
 print(k[1:-1])
+
+
+# corpus 라는건 단어를 index로 바꾼 array
+'''
+vocab_size는 corpus에서 추출이 가능할 건데 왜 굳이 외부에서 넣어주는지 심히 이해 가지 않는다. 
+'''
+# 이 함수를 이해하기 위해서는 numpy에 익숙해져야 하고, 특히 다차원 array와 그 array가 for 문에서 어떻게 작동하는지를 알아야 한다. 
+def convert_one_hot(corpus, vocab_size):
+    N = corpus.shape[0] # 1 document의 길이
+
+    if corpus.ndim ==1:
+        one_hot = np.zeros((N,vocab_size),dtype=np.int32)
+        for idx, word_id in enumerate(corpus):
+            one_hot[idx, word_id] = 1
+    elif corpus.ndim ==2:# document수가 2개이상
+        one_hot = np.zeros((N,corpus.shape[1], vocab_size,),dtype=np.int32)
+        for idx, word_ids, in enumerate(corpus):
+            for idx_2, word_id in enumerate(word_ids):
+                one_hot[idx, idx_2,word_id] = 1
+    return one_hot
+                
+
+
 
 
     
